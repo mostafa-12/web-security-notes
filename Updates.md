@@ -3,6 +3,47 @@
 
 ---
 
+## 2026-07-21
+
+### Completed
+
+#### Linux (Linux Journey — Grasshopper)
+
+- ✅ Linux History — UNIX, GNU Project, Linux Kernel
+- ✅ Command Line — Shell vs Terminal, Bash, Shell Prompt, Command Structure
+- ✅ Commands — pwd, cd, ls, touch, file, cat, less, history, cp, mv, mkdir, rm, find, help, man, whatis, alias, exit
+
+#### Recon (WAHH)
+
+- ✅ Manual Browsing — process, multi-step workflows, limitations
+- ✅ Robots.txt — how it reveals hidden directories
+- ✅ Site Maps — HTML vs XML sitemaps, robots.txt vs sitemap.xml
+- ✅ Web Spidering — fundamentals, user-directed spidering methodology (WAHH), discovery vs crawling, CSRF token limitations
+- ✅ Hidden Content Discovery — intro, methodology (recursive enumeration), functional path model, hidden parameters, brute force, context-aware wordlists, public info recon (search engines, Wayback Machine, developer footprints, people-based recon, web server exploitation)
+
+---
+
+### 💡 Key Concepts I Finally Understood
+
+- The difference between Terminal, Shell, and Kernel — and how they work together.
+- Shell is a command interpreter, not the same as Terminal.
+- Linux = GNU Tools + Linux Kernel (GNU/Linux).
+- Hidden content discovery is an iterative process — every discovery guides the next round.
+- A discovered URL is not the same as a crawled URL.
+- Brute-force content discovery is guided, not random — it follows naming conventions and application structure.
+- Functional path model: some apps expose all functionality through a single endpoint where parameters determine the function, not the URL.
+- robots.txt is a guide for crawlers, not a security control — it may reveal sensitive paths.
+
+---
+
+### 🛠 Repository Improvements
+
+- Added `05-Linux/` section with Intro and comprehensive Command Line notes.
+- Added `04-Recon/` section with 12 files covering manual browsing, spidering, and hidden content discovery.
+- Added `02-Web Architecture/Mapping Methodology.md`.
+
+---
+
 ## 2026-07-14
 
 ###  Completed
@@ -56,11 +97,3 @@ Studied and documented:
   - Cookie Prefixes
 - Added an HTTP knowledge base structure.
 - Improved note organization for future expansion.
-
----
-
-### 📖 Next Goal
-
-- Chapter 4 - The Web Application Hacker's Handbook
-- Begin studying **Access Control**.
-- Start solving PortSwigger Access Control labs alongside the theory.
