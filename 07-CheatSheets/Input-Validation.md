@@ -91,39 +91,10 @@ User Input → [Boundary 1] → App Logic → [Boundary 2] → Database
 |---------|----------|
 | HTML body | HTML entity encoding (`<` → `&lt;`) |
 | HTML attribute | Attribute encoding |
-| JavaScript | JS encoding (`\x3c`) |
 | URL | URL encoding (`%3C`) |
-| CSS | CSS encoding |
-| SQL | Parameterized queries (not encoding) |
-| XML | XML encoding |
+| SQL | Parameterized queries |
 
-> **The encoding must match the context.** HTML-encoding in JavaScript context is still vulnerable.
-
----
-
-## Parameterized Queries
-
-> Use prepared statements to separate SQL logic from data.
-
-### Vulnerable
-
-```sql
-SELECT * FROM users WHERE id = '$id'
-```
-
-### Secure
-
-```python
-cursor.execute("SELECT * FROM users WHERE id = %s", (id,))
-```
-
-### ORMs
-
-ORMs (SQLAlchemy, Hibernate, Eloquent) use parameterized queries by default. However:
-
-- Raw queries in ORMs are still vulnerable
-- `ORM.filter(raw_input)` may be unsafe
-- Always check for raw query methods
+> **The encoding must match the context.**
 
 ---
 
@@ -133,8 +104,8 @@ ORMs (SQLAlchemy, Hibernate, Eloquent) use parameterized queries by default. How
 |--------|-------------|
 | Case variation | `<ScRiPt>` vs `<script>` |
 | Encoding | `&#60;script&#62;` |
-| Null bytes | `<script%00>` |
-| Double encoding | `%253Cscript%253E` |
+| Null bytes | `%00` suffix |
+| Double encoding | `%253C%253E` |
 | Parameter pollution | Duplicate parameters with different values |
 | Content-Type switch | JSON ↔ form-data ↔ XML |
 | Unicode | Full-width characters, homoglyphs |
@@ -145,11 +116,8 @@ ORMs (SQLAlchemy, Hibernate, Eloquent) use parameterized queries by default. How
 
 - [ ] Is input validated on the client-side only?
 - [ ] Can you bypass blacklists with encoding/case variation?
-- [ ] Is the application vulnerable to SQL injection (try all input fields)?
-- [ ] Can you inject into HTML/JavaScript contexts (XSS)?
 - [ ] Does the application normalize paths before validation (traversal)?
 - [ ] Can you switch Content-Type to bypass validation?
-- [ ] Are there any raw SQL queries in the ORM layer?
 - [ ] Can you inject into HTTP headers (CRLF injection)?
 - [ ] Is XML input accepted (XXE potential)?
 - [ ] Can you upload files with unexpected extensions?
@@ -163,8 +131,6 @@ ORMs (SQLAlchemy, Hibernate, Eloquent) use parameterized queries by default. How
 | Relying on client-side validation | Bypassed in seconds with Burp |
 | Using blacklist filtering | Trivially bypassed with encoding |
 | Validating before canonicalization | Encoding hides malicious payloads |
-| HTML-encoding everywhere | Context matters — JavaScript context needs JS encoding |
-| Trusting ORM to be secure | Raw queries in ORM are still vulnerable |
 
 ---
 
@@ -173,13 +139,10 @@ ORMs (SQLAlchemy, Hibernate, Eloquent) use parameterized queries by default. How
 ```
 □ Verified server-side validation exists on all inputs
 □ Tested client-side validation bypass
-□ Tested SQL injection on all input fields
-□ Tested XSS in all output contexts (HTML, attribute, JS, URL)
 □ Tested path traversal with encoding bypasses
 □ Tested Content-Type switching (JSON ↔ form-data ↔ XML)
 □ Tested header injection (CRLF)
 □ Tested file upload with malicious extensions
-□ Verified parameterized queries are used for DB access
 □ Tested XML input for XXE
 ```
 

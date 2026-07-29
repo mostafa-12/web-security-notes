@@ -24,7 +24,7 @@ A machine-readable file designed for search engines.
 Example:
 
 ```text
-/ sitemap.xml
+/sitemap.xml
 ```
 
 ## Note

@@ -6,10 +6,9 @@
 - [Session Lifecycle](#session-lifecycle)
 - [Session vs Cookie vs Token](#session-vs-cookie-vs-token)
 - [Cookies](#cookies)
-- [JWT](#jwt)
-- [Session Fixation](#session-fixation)
+- [JWT (Basic)](#jwt-basic)
 - [Session Hijacking](#session-hijacking)
-- [Secure Cookie Attributes](#secure-cookie-attributes)
+- [Session Fixation](#session-fixation)
 - [Bug Bounty Notes](#bug-bounty-notes)
 - [Common Mistakes](#common-mistakes)
 - [Checklist](#checklist)
@@ -79,43 +78,22 @@
 
 ---
 
-## JWT
+## JWT (Basic)
 
-### JWT Structure
+- Self-contained signed token stored client-side
+- Base64-decoded payload readable by anyone
+- Not a session — no server-side state
 
-```
-Header.Payload.Signature
+---
 
-Header:  {"alg": "HS256", "typ": "JWT"}
-Payload: {"sub": "1234567890", "name": "Ahmed", "role": "user"}
-Signature: HMAC-SHA256(base64(header) + "." + base64(payload), secret)
-```
+## Session Hijacking
 
-### Common JWT Bugs
-
-| Bug | Description |
-|-----|-------------|
-| Algorithm None | Set `alg` to `none` — signature bypass |
-| Algorithm Confusion | Switch from RS256 to HS256 using public key as secret |
-| Weak Secret | Brute force the HMAC secret |
-| No Expiry | Tokens never expire |
-| Sensitive Data in Payload | PII/roles stored in plaintext payload |
-| Missing Validation | Token accepted without verifying signature |
-
-### JWT Testing Commands
-
-```bash
-# Decode JWT (no verification)
-echo -n "eyJhbGci..." | base64 -d
-
-# Test none algorithm
-# Modify header: {"alg":"none"}
-# Remove signature part (keep the trailing dot)
-
-# Test weak secret
-hashcat -m 16500 jwt.txt wordlist.txt
-john jwt.txt --wordlist=wordlist.txt
-```
+| Method | Description |
+|--------|-------------|
+| XSS | Steal cookie via `document.cookie` |
+| Network Sniffing | Capture cookie over HTTP (no HTTPS) |
+| Session Fixation | Force known session ID |
+| Predictable IDs | Guess session ID sequence |
 
 ---
 
@@ -150,8 +128,6 @@ john jwt.txt --wordlist=wordlist.txt
 - [ ] Does the session expire after a reasonable time?
 - [ ] Is the session invalidated on logout (server-side)?
 - [ ] Can you use a logged-out session token?
-- [ ] Are JWT secrets brute-forceable?
-- [ ] Can you modify JWT payload to escalate privileges?
 - [ ] Is the `SameSite` attribute set on session cookies?
 - [ ] Can session cookies be set via URL parameters?
 
@@ -163,7 +139,6 @@ john jwt.txt --wordlist=wordlist.txt
 |---------|---------|
 | Cookie = Session | They're different concepts |
 | Checking cookie exists = authenticated | Cookie must be validated server-side |
-| Ignoring JWT alg field | Algorithm confusion is a real attack |
 | Session expiry = secure | Need server-side invalidation too |
 
 ---
@@ -176,12 +151,7 @@ john jwt.txt --wordlist=wordlist.txt
 □ Tested session fixation (can attacker set session ID before login?)
 □ Verified session invalidation on logout
 □ Tested session expiry and idle timeout
-□ Decoded JWT and checked for sensitive data in payload
-□ Tested JWT algorithm confusion (RS256 → HS256)
-□ Tested JWT 'none' algorithm
-□ Brute-forced JWT secret (if weak)
 □ Checked for session tokens in URLs
-□ Verified CSRF tokens are tied to session
 ```
 
 ---

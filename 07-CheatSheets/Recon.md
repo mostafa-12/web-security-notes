@@ -154,21 +154,7 @@ Disallow: /config
 
 ## Directory Discovery
 
-| Tool | Purpose |
-|------|---------|
-| Burp Intruder | Brute force directories/files |
-| ffuf | Fast web fuzzer |
-| dirsearch | Directory discovery |
-| Gobuster | Directory/DNS brute force |
-
-### Wordlists
-
-| Wordlist | Source |
-|----------|--------|
-| SecLists | `Discovery/Web-Content/` |
-| common.txt | Default for most tools |
-| raft-medium-directories.txt | Medium-sized directory list |
-| directory-list-2.3-medium.txt | OWASP |
+Use Burp Intruder or similar tools for brute forcing.
 
 ### Method
 

@@ -3,6 +3,104 @@
 
 ---
 
+## 2026-07-29
+
+### Completed
+
+#### Access Control
+
+- ✅ Access Control Types — Vertical, Horizontal, Context-Dependent
+- ✅ Access Control Testing Methodology — 4-phase methodology (Understand → Identify → Test → Validate)
+- ✅ 9 PortSwigger Access Control labs (00–09):
+  - Unprotected admin functionality
+  - Unprotected admin with unpredictable URL
+  - User role controlled by request parameter
+  - User role modified in user profile
+  - URL-based access control circumvented
+  - Method-based access control circumvented
+  - User ID controlled by request parameter (regular, unpredictable user IDs, data leakage in redirect, password disclosure)
+
+#### Web Architecture
+
+- ✅ Anatomy of a Web Request — Browser → DNS → TCP → TLS → Reverse Proxy → Gunicorn → Middleware → Flask
+- ✅ Trust Boundary analysis — which components trust each other, where attackers can inject
+- ✅ Platform Misconfiguration — how different components can interpret the same request differently (X-Original-URL, X-Rewrite-URL)
+
+#### Repository Improvements
+
+- Stripped CheatSheets of topics not actually studied (OAuth, SSO, IDOR section, JWT internals, SQLi/XSS examples, tools/wordlists)
+- Fixed `Updates.md` entry format for consistency with the 2026-07-14 style
+- Aligned all CheatSheet content with existing detailed notes only
+
+---
+
+### Key Concepts
+
+- Authorization belongs inside the application, not just at the infrastructure layer
+- Different components interpreting the same request differently is the root cause of many access control bypasses
+- Never trust metadata (headers) unless you know who generated it — one component's internal header can be another component's attack vector
+- Access control testing is hypothesis-driven: observe first, build theories, then verify
+
+---
+
+### Next Goal
+
+- Start IDOR (Insecure Direct Object References) labs
+- Continue with CORS — study the mechanism and attack scenarios
+- Continue PortSwigger Access Control labs (remaining labs)
+
+---
+
+## 2026-07-21
+
+### Completed
+
+#### CheatSheets
+
+- ✅ Created `07-CheatSheets/` — 11 quick-reference cheat sheets based on all studied topics
+- ✅ Created `04-Recon/00-Recon Map.md` — navigation file linking recon content across the repo
+- ✅ Added README navigation to `01-HTTP/`, `04-Recon/`, `05-Linux/`, and `07-CheatSheets/`
+
+#### CheatSheets Created
+
+- HTTP — methods, content types, cookies, REST
+- Status-Codes — 1xx–5xx with testing relevance
+- Useful-Headers — request, response, security, auth, caching, proxy headers
+- Authentication — flow, common weaknesses, checklist
+- Session-Management — lifecycle, cookies, JWT, fixation, hijacking
+- Access-Control — vertical, horizontal, forced browsing, context-dependent
+- Input-Validation — whitelist vs blacklist, canonicalization, output encoding
+- Burp-Suite — every tool, workflow, shortcuts
+- Recon — phases, mapping, spidering, directory discovery, JS/API
+- Encoding — URL, HTML, Unicode, Base64, Hex, JSON, double encoding
+- Notes-To-Remember — core principles, pitfalls, mindset
+
+---
+
+### 💡 Key Concepts
+
+- Cheat sheets are quick references, not replacements for detailed notes
+- Every cheat sheet follows the same structure: tables, bug bounty notes, common mistakes, checklist
+- Recon folder now has a map file connecting it to related content across the repo
+
+---
+
+### 🛠 Repository Improvements
+
+- Added `07-CheatSheets/` section with 11 cheat sheets
+- Added `04-Recon/00-Recon Map.md` for cross-folder navigation
+- Added README.md to `01-HTTP/`, `04-Recon/`, `05-Linux/`
+
+---
+
+### 📖 Next Goal
+
+- Chapter 4 — The Web Application Hacker's Handbook
+- Begin studying **Access Control**
+- Start solving PortSwigger Access Control labs alongside the theory
+
+---
+
 ## 2026-07-21
 
 ### Completed

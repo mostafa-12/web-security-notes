@@ -6,7 +6,6 @@
 - [Types of Access Control](#types-of-access-control)
 - [Vertical Privilege Escalation](#vertical-privilege-escalation)
 - [Horizontal Privilege Escalation](#horizontal-privilege-escalation)
-- [IDOR](#idor)
 - [Forced Browsing](#forced-browsing)
 - [Context-Dependent Access Control](#context-dependent-access-control)
 - [Common Authorization Flaws](#common-authorization-flaws)
@@ -67,7 +66,6 @@
 
 | Vector | Description |
 |--------|-------------|
-| IDOR | Change ID in URL or body |
 | Sequential IDs | Predictable resource identifiers |
 | Parameter tampering | `user_id=123` → `user_id=124` |
 | Referer/Origin manipulation | Modifying request origin |
@@ -79,33 +77,6 @@
 2. Access User A's resources
 3. Change the user identifier to User B's
 4. Check if User B's data is returned
-```
-
----
-
-## IDOR
-
-> Insecure Direct Object Reference — access objects by manipulating identifiers.
-
-### IDOR Patterns
-
-| Pattern | Example |
-|---------|---------|
-| URL path | `/api/users/123` → `/api/users/456` |
-| Query parameter | `?user_id=123` → `?user_id=456` |
-| POST body | `{"userId": 123}` → `{"userId": 456}` |
-| Headers | Custom headers with user IDs |
-| File paths | `/files/user123/report.pdf` → `/files/user456/report.pdf` |
-
-### IDOR in APIs
-
-```http
-GET /api/v1/orders/12345 HTTP/1.1
-Authorization: Bearer <user_a_token>
-
-# Try:
-GET /api/v1/orders/12346 HTTP/1.1
-Authorization: Bearer <user_a_token>
 ```
 
 ---
@@ -147,10 +118,8 @@ Authorization: Bearer <user_a_token>
 | Flaw | Description |
 |------|-------------|
 | Missing function-level access control | Admin endpoint accessible to all users |
-| IDOR | Manipulating object references |
 | Forced browsing | Direct URL access bypasses checks |
 | Parameter manipulation | Changing `admin=false` to `admin=true` |
-| JWT role tampering | Modifying `role` in JWT payload |
 | HTTP method bypass | Access control on GET but not POST |
 | Path traversal bypass | `/admin` blocked, `/admin/` works |
 | Case sensitivity bypass | `/Admin` vs `/admin` |
@@ -161,14 +130,12 @@ Authorization: Bearer <user_a_token>
 ## Bug Bounty Notes
 
 - [ ] Can you access admin endpoints as a normal user?
-- [ ] Can you access another user's data by changing IDs (IDOR)?
+- [ ] Can you access another user's data by changing user IDs?
 - [ ] Can you bypass 403 by changing HTTP method?
 - [ ] Can you bypass path-based access control with `X-Original-URL`?
 - [ ] Can you skip workflow steps (forced browsing)?
 - [ ] Does the API verify authorization on every request?
-- [ ] Can you modify JWT claims to escalate privileges?
 - [ ] Are there any endpoints that don't check authentication at all?
-- [ ] Can you access other tenants' data in multi-tenant applications?
 - [ ] Does the application leak data in error messages when access is denied?
 
 ---
@@ -189,14 +156,11 @@ Authorization: Bearer <user_a_token>
 ```
 □ Tested vertical privilege escalation (user → admin)
 □ Tested horizontal privilege escalation (user A → user B)
-□ Tested IDOR on all object references (IDs, filenames, tokens)
 □ Tested forced browsing on authenticated pages
 □ Tested HTTP method switching on access-controlled endpoints
 □ Tested path-based 403 bypass (X-Original-URL, case sensitivity)
 □ Verified authorization on every API endpoint
 □ Checked for missing function-level access control
-□ Tested JWT claim manipulation
-□ Verified multi-tenant isolation
 □ Checked error messages for information leakage
 ```
 
