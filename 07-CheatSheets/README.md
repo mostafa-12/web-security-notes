@@ -20,6 +20,7 @@ Quick-reference documents for web security testing. Each sheet covers a single t
 | `Burp-Suite.md` | Every tool (Proxy, Intruder, Repeater...), shortcuts, professional workflow |
 | `Recon.md` | Application mapping, spidering, robots.txt, backup files, JS/API discovery |
 | `Encoding.md` | URL, HTML, Unicode, Base64, Hex, JSON, double encoding, bypass techniques |
+| `Ports-Services.md` | Important port numbers & services, port ranges, testing notes |
 | `Notes-To-Remember.md` | Core principles, common pitfalls, bug bounty mindset |
 
 ---
@@ -45,5 +46,6 @@ Quick-reference documents for web security testing. Each sheet covers a single t
 8.  Input-Validation.md
 9.  Burp-Suite.md
 10. Recon.md
-11. Notes-To-Remember.md
+11. Ports-Services.md
+12. Notes-To-Remember.md
 ```
