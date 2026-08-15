@@ -7,11 +7,12 @@
 	- Never send sensitive data in the URL.
 - POST : 
 	- Perform an action on the server.
-	- Data is usually sent in the request body (can also use query parameters).
+	- Data is sent in the request body (can also use query parameters).
 	- Used for actions like login, registration, updating data.
 	- Browser warns before resending a POST request (to avoid repeating actions).
 - HEAD : same as GET but without body content only headers
 - TRACE : same request's body is same response's body (to check there is no Data-Manipulation)
+	- زي صدي الصوت في ال tcp channel 
 - OPTION : show allowed HTTP Methods can be performed 
 - PUT:
 	- Upload or replace a resource.

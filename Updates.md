@@ -3,6 +3,59 @@
 
 ---
 
+## 2026-08-15
+
+### Completed
+
+#### Networking
+
+- ✅ Network Basics — network types (LAN/WAN), physical vs logical, topologies (Bus, Ring, Star, Mesh, Partial-Mesh), cables (Coaxial, Twisted-Pair, Fiber), access methods (CSMA/CD)
+- ✅ OSI 7 Layers — layer-by-layer notes, adjacent vs same-layer interactions, presentation/session/transport behavior, duplex modes & auto-negotiation
+- ✅ Connection Models — Work Group (P2P) vs Client/Server (Domain): local vs centralized accounts, how permissions work in each, Share vs NTFS permissions
+
+#### IP Configuration (DHCP)
+
+- ✅ Ports & Sockets — port ranges (0-1023, 1024-49151, 49152-65535), socket = IP + Port, socket vs port, relation to web security
+- ✅ How a device gets an IP — Manual (Static), DHCP, Alternate Configuration, APIPA (169.254.x.x)
+- ✅ DORA — Discover/Offer/Request/Acknowledge, why each step is broadcast vs unicast, why REQUEST must be broadcast, when broadcast is not needed (renewal, DHCP relay)
+
+#### DNS
+
+- ✅ DNS workflow — key terms (FQDN, Resolver, Root/TLD/Authoritative servers, A/AAAA, CNAME, TTL, Cache), resolution flow, Recursive vs Iterative queries
+
+#### Access Control (continued)
+
+- ✅ Completed remaining Access Control labs (10–12):
+  - IDOR (Insecure Direct Object Reference)
+  - Multi-Step Process Access Control
+  - Referer-Based Access Control
+- ✅ IDOR note + Referer-Based Access Control note
+
+#### Repository Improvements
+
+- ✅ Created `06-Networking/` section (Basics, Intro, OSI 7 layer folder)
+- ✅ Filled `Connection Models.md`, `Ports.md`, expanded `Application Layer-TCP-IP.md` (DHCP + DNS)
+- ✅ Added `07-CheatSheets/Ports-Services.md` + updated CheatSheets README
+
+---
+
+### 💡 Key Concepts
+
+- Permissions in P2P are local to each device — a user account does not propagate to other machines
+- DORA broadcast vs unicast depends on what the client knows: no IP + unknown server → broadcast; known server → unicast
+- APIPA (169.254.x.x) is a fallback symptom, not a real network configuration
+- DNS is hierarchical — no single server knows everything, resolution walks Root → TLD → Authoritative
+
+---
+
+### Next Goal
+
+- Continue Access Control testing methodology practice
+- Start CORS attack scenarios / next vulnerability class
+- Continue Linux + Networking roadmap topics
+
+---
+
 ## 2026-07-29
 
 ### Completed

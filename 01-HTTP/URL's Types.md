@@ -2,7 +2,8 @@
 ***A uniform resource locator (URL)***
 
 ### consists of 
-~~~
+~~~http
+
 protocol://hostname[:port]/[path/]file[?param=value]
 ~~~
 
@@ -29,5 +30,9 @@ Representational State Transfer (REST)
 
 Examples
 
+```HTTP
+
 /search?make=ford&model=pinto
-/search/ford/pinto
+/search/ford/Pinto
+```
+

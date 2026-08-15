@@ -23,10 +23,10 @@
 
 ## 1xx — Informational
 
-| Code | Name | Meaning |
-|------|------|---------|
-| 100 | Continue | Server accepted request headers; continue sending body |
-| 101 | Switching Protocols | Server switching to WebSocket or upgrade protocol |
+| Code | Name                | Meaning                                                                                                                         |
+| ---- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| 100  | Continue            | Server accepted request headers; continue sending body, client received part of body success and ask server to send other parts |
+| 101  | Switching Protocols | Server switching to WebSocket or upgrade protocol                                                                               |
 
 > Rarely seen in manual testing. Usually handled automatically by browsers.
 
@@ -34,25 +34,25 @@
 
 ## 2xx — Success
 
-| Code | Name | Meaning |
-|------|------|---------|
-| 200 | OK | Standard success |
-| 201 | Created | Resource created (POST/PUT) |
-| 202 | Accepted | Request accepted but not yet processed |
-| 204 | No Content | Success with no response body (DELETE) |
+| Code | Name       | Meaning                                                                                   |
+| ---- | ---------- | ----------------------------------------------------------------------------------------- |
+| 200  | OK         | Standard success                                                                          |
+| 201  | Created    | Resource created (POST/PUT)                                                               |
+| 202  | Accepted   | Request accepted but not yet processed (mission in progress like 101 but for server-side) |
+| 204  | No Content | Success with no response body (DELETE)                                                    |
 
 ---
 
 ## 3xx — Redirection
 
-| Code | Name | Meaning | Follow? |
-|------|------|---------|---------|
-| 301 | Moved Permanently | Resource permanently moved | Yes |
-| 302 | Found | Temporary redirect | Yes |
-| 303 | See Other | Redirect with GET | Yes |
-| 304 | Not Modified | Use cached version | N/A |
-| 307 | Temporary Redirect | Preserve method | Yes |
-| 308 | Permanent Redirect | Preserve method | Yes |
+| Code | Name               | Meaning                    | Follow? |
+| ---- | ------------------ | -------------------------- | ------- |
+| 301  | Moved Permanently  | Resource permanently moved | Yes     |
+| 302  | Found              | Temporary redirect         | Yes     |
+| 303  | See Other          | Redirect with GET          | Yes     |
+| 304  | Not Modified       | Use cached version         | N/A     |
+| 307  | Temporary Redirect | Preserve method            | Yes     |
+| 308  | Permanent Redirect | Preserve method            | Yes     |
 
 > **Security Note:** 302 redirects on login can leak the Referer header. Check if the redirect target is validated (Open Redirect).
 
@@ -122,16 +122,15 @@
 
 ## Checklist
 
-```
-□ Tested nonexistent paths — do they return 200 or 404?
-□ Checked 403 responses with different methods (GET → POST → PUT)
-□ Checked 403 responses with header manipulation (X-Forwarded-For, X-Original-URL)
-□ Monitored for 500 errors during input testing
-□ Checked for stack traces or debug output in 500 responses
-□ Verified rate limit behavior (429 vs 403)
-□ Checked Allow header on 405 responses
-□ Verified redirect destinations (Open Redirect)
-```
+- [ ] Tested nonexistent paths — do they return 200 or 404?
+- [ ] Checked 403 responses with different methods (GET → POST → PUT)
+- [ ] Checked 403 responses with header manipulation (X-Forwarded-For, X-Original-URL)
+- [ ] Monitored for 500 errors during input testing
+- [ ] Checked for stack traces or debug output in 500 responses
+- [ ] Verified rate limit behavior (429 vs 403)
+- [ ] Checked Allow header on 405 responses
+- [ ] Verified redirect destinations (Open Redirect)
+
 
 ---
 

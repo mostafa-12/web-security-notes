@@ -136,5 +136,60 @@ Once the client **already knows the server** and **has an IP**, DORA no longer u
 
 
 
-# DNS
+# DNS (Domain Name System)
+
+- Translates a domain name (`example.com`) into an **IP address** — the phone book of the internet.
+- Works on **port 53** — usually **UDP**, falls back to **TCP** for large responses.
+- Uses a **hierarchy of servers** — no single server knows everything.
+
+---
+
+## Key Terms
+
+| Term                     | Meaning                                                            |
+| ------------------------ | ------------------------------------------------------------------ |
+| **FQDN**                 | Full domain name: `example.com.` (the last dot is the root)        |
+| **Resolver**             | Recursive server (usually your ISP's) that does the lookup for you |
+| **Root Server** (`.`)    | Top of the tree; knows who manages each TLD (`.com`, `.org`...)    |
+| **TLD Server** (`.com`)  | Knows who manages each domain inside that TLD                      |
+| **Authoritative Server** | The real owner of the domain — the only one with the final answer  |
+| **A Record**             | Map: `name → IPv4`                                                 |
+| **AAAA Record**          | Map: `name → IPv6`                                                 |
+| **CNAME**                | Alias: "I am another name for this real name"                      |
+| **TTL**                  | How many seconds the answer can stay cached before asking again    |
+| **Cache**                | Saved answers, so we don't repeat the full lookup                  |
+
+---
+
+## Workflow
+
+```text
+Client wants the IP of example.com
+
+1. Browser Cache  ── not found?
+2. OS / Hosts File ── not found?
+3. Resolver Cache ── not found?
+              ↓
+Resolver starts an Iterative query through the tree:
+
+Client ─Recursive──▶ Resolver
+
+Resolver ─Iterative──▶ Root Server (.)     → "ask the .com TLD"
+             ▼
+Resolver ─Iterative──▶ TLD Server (.com)   → "ask the authoritative server"
+             ▼
+Resolver ─Iterative──▶ Authoritative Server → returns A record: 93.184.216.34 (+ TTL)
+
+Resolver ────▶ Client: 93.184.216.34
+    (and caches it for the TTL)
+```
+
+---
+
+## Recursive vs Iterative (Query types)
+
+| Type          | Who → Who                         | Meaning                                               |
+| ------------- | --------------------------------- | ----------------------------------------------------- |
+| **Recursive** | Client → Resolver                 | "Get me the answer, all of it, handle everything"     |
+| **Iterative** | Resolver → Root/TLD/Authoritative | "Just point me to the next server, I'll keep walking" |
 
