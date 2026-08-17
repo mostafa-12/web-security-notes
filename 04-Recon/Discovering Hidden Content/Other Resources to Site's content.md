@@ -13,6 +13,8 @@ Hidden content may still be discoverable through public sources, even if it is n
 - Public Documentation
 - Third-Party References
 
+> **Deep-dive:** [[04-Recon/Wayback Machine (CDX API).md|Wayback Machine & CDX API]] — historical recon: snapshot versioning for rotated secrets + domain-wide URL discovery.
+
 ---
 
 ## Why It Works

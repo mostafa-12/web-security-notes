@@ -45,6 +45,8 @@ I want to share the knowledge I'm learning and help anyone who may find these no
 - Networking
 - Recon
 - Python Automation
+- Bug Bounty Writeups & Reports
+- Bug Bounty Targets
 - and more...
 
 ---
@@ -55,13 +57,19 @@ I want to share the knowledge I'm learning and help anyone who may find these no
 web-security-notes/
 
 ├── README.md
+├── Updates.md
 ├── 00-Roadmap/
 ├── 01-HTTP/
-├── 02-Web-Vulnerabilities/
-├── 03-Labs/
-├── 04-Linux/
-├── 05-Networking/
-└── 06-CheatSheets/
+├── 02-Web Architecture/
+├── 03-Web-Vulnerabilities/
+├── 04-Recon/
+├── 05-Linux/
+├── 06-Networking/
+├── 07-CheatSheets/
+├── 08-Python Automating Project (ideas)/
+├── 09-Writeups & Reports/
+├── 10-Targets/
+└── 11-Infrastructure/
 ```
 
 

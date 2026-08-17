@@ -28,12 +28,13 @@
 │   ├── User Spidering Methodology (WAHH).md
 │   ├── Site Map Discovery vs Crawling.md
 │   └── Per-Page CSRF Tokens Limitations.md
-└── Discovering Hidden Content/
-    ├── Intro.md
-    ├── Methodology.md
-    ├── Brute Force.md
-    ├── Context-Aware WordList.md
-    └── Other Resources to Site's content.md
+├── Discovering Hidden Content/
+│   ├── Intro.md
+│   ├── Methodology.md
+│   ├── Brute Force.md
+│   ├── Context-Aware WordList.md
+│   └── Other Resources to Site's content.md
+└── Wayback Machine (CDX API).md
 ```
 
 ---
@@ -66,6 +67,12 @@
 | `Discovering Hidden Content/Brute Force.md` | Brute force discovery | Guided guessing, not random — naming conventions + numeric patterns |
 | `Discovering Hidden Content/Context-Aware WordList.md` | Smart wordlists | Wordlists based on app structure, not generic lists |
 | `Discovering Hidden Content/Other Resources to Site's content.md` | Public info recon | Search engines, Wayback Machine, developer footprints, people-based recon, web server |
+
+### Historical Recon (Wayback Machine)
+
+| File | Topic | Key Takeaway |
+|------|-------|--------------|
+| `Wayback Machine (CDX API).md` | Archived snapshots & CDX API | Rotation is surface-level — old snapshots still hold rotated-out secrets; CDX API enumerates every URL the domain ever had |
 
 ---
 
@@ -210,6 +217,9 @@ Related to: Automating the spidering process.
 
 11. Discovering Hidden Content/Other Resources to Site's content.md
     └── Public info recon
+
+12. Wayback Machine (CDX API).md
+    └── Historical recon — rotated secrets + domain-wide URL discovery
 
 Then: 07-CheatSheets/Recon.md (as quick reference)
 ```

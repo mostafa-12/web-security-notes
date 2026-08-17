@@ -22,6 +22,7 @@ Reconnaissance — mapping the target application's attack surface. Every findin
 | `Discovering Hidden Content/Brute Force.md` | Guided enumeration using naming conventions |
 | `Discovering Hidden Content/Context-Aware WordList.md` | Wordlists based on app structure |
 | `Discovering Hidden Content/Other Resources to Site's content.md` | Search engines, Wayback, developer footprints |
+| `Wayback Machine (CDX API).md` | Historical recon deep-dive: snapshot versioning + CDX API for rotated secrets & URL discovery |
 | `00-Recon Map.md` | Cross-folder navigation map |
 
 ---
@@ -49,5 +50,6 @@ Reconnaissance — mapping the target application's attack surface. Every findin
 9.  Discovering Hidden Content/Brute Force.md
 10. Discovering Hidden Content/Context-Aware WordList.md
 11. Discovering Hidden Content/Other Resources to Site's content.md
-12. 00-Recon Map.md
+12. Wayback Machine (CDX API).md
+13. 00-Recon Map.md
 ```

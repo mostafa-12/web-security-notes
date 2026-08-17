@@ -3,6 +3,60 @@
 
 ---
 
+## 2026-08-18
+
+### Completed
+
+#### Bug Bounty Writeups — `09-Writeups & Reports/`
+
+- ✅ Case study: **Training Platform — Login Bypass to Full Admin** (`Training Platform - Login Bypass to Full Admin.md`) — Shodan SSL-cert recon → SSRS `/ReportServer` (directory listing) → JS reverse-engineering (`views/users/index.js`, Backbone) → **3 access-control bypasses** (internal hostname swap, trailing slash, double path) + response manipulation (read-only flag `1→0`) → unauthenticated write access on 50k+ profiles + SSN leak
+- ✅ Case study: **Plan Restriction Bypass — Free Tier → Paid Features** (`Plan Restriction Bypass - Free Tier to Paid Features.md`) — paywall enforced in the UI **only**; crafted `PUT /api/0/projects/<org>/<project>/plugins/splunk/` gives free-tier users the paid data-forwarding feature ($469). Target: **Sentry** (pseudonym ExamenTry)
+- ✅ Case study: **API Misconfiguration → PII of 100k+ users** (`API Misconfiguration - PII Leak (100k users).md`) — participants API checks **auth but not authorization** + invite codes that never expire + stale codes recovered from a stray JS file (`go.target.com/55932.js`) + Wayback CDX
+- ✅ Created `Reports Summary Table.md` — one row per report (idea, tip, vuln param/method, impact, new web tech) + **Q&A section** + new-techniques list; also summarizes 5 more reports as one-liners (Cache misconfig, Vestaboard, Unauthorized Role Management, First Bounty, Restoring Deleted Projects)
+- ✅ Created `09-Writeups & Reports/README.md` — purpose, contents table, case-study structure, study order
+
+#### New Sections
+
+- ✅ Created `10-Targets/` — `README.md` + `Sentry.md` (error-tracking SaaS; `/api/0/...` REST structure, plan-gating attack surface, links to its report)
+- ✅ Created `11-Infrastructure/` — `README.md` + `Splunk.md` (SIEM/log management; explains `instance` / `index` / `token` / `source` terms behind the ExamenTry payload)
+
+#### Web Architecture — `02-Web Architecture/`
+
+- ✅ New note `Web Caching.md` — cache layers, Cache-Control, **cache key as the security boundary**, micro-caching / short-TTL, the **3 cache-vuln classes** (Web Cache Deception / Cache Poisoning / Cached-authorized-data), how to test (Autorize as cache oracle, timing race)
+- ✅ Expanded `Anatomy of a Web Request.md` — added Trust Boundary, Internal Metadata headers, Correct Trust Model, Platform Misconfiguration, Security Principles, and a Mental Model section (the file the writeups link back to as the "one principle" foundation)
+
+#### Recon — `04-Recon/`
+
+- ✅ New `Discovering Hidden Content/Brute Force.md` — guided (not random) brute force: naming conventions, numeric patterns, inference from published content
+- ✅ New `Discovering Hidden Content/Other Resources to Site's content.md` — public info recon: search engines, Wayback, developer footprints, people-based recon, web server default resources
+- ✅ New `Wayback Machine (CDX API).md` — the **2-step workflow**: snapshot versioning (recover rotated secrets) vs domain-wide URL discovery (`collapse=urlkey`), CDX params table, automation (waybackpy / curl), plus sister archives (Common Crawl, `waybackurls`, `gau`)
+- ✅ Added `04-Recon/README.md` + updated `00-Recon Map.md` with the new files
+
+#### Repository Improvements
+
+- ✅ Updated root `README.md` structure to include `10-Targets/` and `11-Infrastructure/`
+
+---
+
+### 💡 Key Concepts
+
+- **UI-hiding ≠ restriction** — hiding a paid button is client-side; the endpoint still exists and must be enforced server-side per request (Plan Restriction Bypass)
+- **Authentication ≠ authorization** — "is the user logged in?" is a different question from "is the user allowed to touch THIS object?" (100k PII leak)
+- **Rotation is only surface-level** — anything ever public is archived in the Wayback Machine; "deleted" on the live site ≠ deleted in history
+- **Cache key is a security boundary** — user-specific responses must not be cached under a public key; micro-caching/short-TTL just creates the exploitation window
+- **One principle across every report** — two components interpreting the same data differently: hostname swap, trailing slash, double path, cache vs backend, UI vs API
+- **Non-expiring tokens are an impact multiplier** — a credential that never expires keeps any leak (even a rotated one) valid forever
+- **Context-aware recon beats wordlists** — the app's own site map / content-usage report / JS bundles are the best wordlists
+
+---
+
+### Next Goal
+
+- Reading more writeups and taking notes and recording information.
+- Trying what I learned on juice-shop platform as training for myself before going into real targets
+
+---
+
 ## 2026-08-15
 
 ### Completed
