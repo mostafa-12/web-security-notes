@@ -3,6 +3,38 @@
 
 ---
 
+## 2026-08-20
+
+### Completed
+
+#### Bug Bounty Writeups — `09-Writeups & Reports/`
+
+- ✅ Case study: **IDOR + Public S3 Report Exposure** (`IDOR + Public S3 Report Exposure.md`) — report generation as an **async background job** (`postId` → `backgroundJobId`, ownership never checked) + PDFs served from a **public S3 bucket** via a plain unauthenticated URL; sequential post IDs + Intruder (0→9,999,999) → all users' private reports exposed. Discussed + completed the missing parts of the write-up (email-path ambiguity, UUID-bruteforce wording, missing scope/disclosure, storage-layer severity)
+- ✅ Added row + **Q&A (4 questions)** + new techniques (23–28) to `Reports Summary Table.md`
+
+#### Infrastructure — `11-Infrastructure/`
+
+- ✅ New note `Amazon S3.md` — object storage model, the 3 access-control systems (Bucket Policy / IAM / ACLs) + Block Public Access, the **2 exposure levels** (public object vs public ListBucket), how to test (`?list-type=2`, `--no-sign-request`), why it happens, responsible testing, and the fix (private bucket + short-lived presigned URLs)
+
+---
+
+### 💡 Key Concepts
+
+- **UUIDs are references, not permissions** — unguessable ≠ authorized; a UUID is only as strong as the narrowest way to obtain it (a predictable sequential `postId` in front of it destroys its secrecy)
+- **Fixed symptom ≠ fixed root cause** — binding the email recipient server-side didn't fix the missing ownership check; the bug just moved to the PDF path
+- **Storage layer is a separate trust domain** — the S3 URL is a different boundary than the API that produced it; test object-public *and* list-public independently
+- **Async job pattern = more attack surface** — every step of a multi-request workflow needs its own authorization test, not just the first interesting response
+- **Defense in depth** — each layer (API generation, result fetch, file storage) must be secure on its own
+
+---
+
+### Next Goal
+
+- Practicing the multi-step authorization testing on the next writeup / juice-shop
+- Adding presigned URL / cloud storage cases to the Access Control testing methodology
+
+---
+
 ## 2026-08-18
 
 ### Completed

@@ -45,17 +45,17 @@ The permission is granted to a **user account** that must exist on the sharing m
 
 # Comparison
 
-| | Work Group (P2P) | Client/Server (Domain) |
-|---|---|---|
-| Control | Distributed (each PC manages itself) | Centralized (DC) |
-| Where accounts live | Locally on each PC | Centrally in the DC |
-| Account on one PC seen on others? | No | Yes |
-| Same username on another PC | Different account | Same account |
-| Grant a permission | On each PC separately | Once, from the DC |
-| Single point of failure | No | Yes (the DC) |
-| Security | Harder to enforce | Easier / centralized |
-| Scalability | Limited | High |
-| Example | Workgroup sharing, torrent | Company networks, Windows Domain |
+|                                   | Work Group (P2P)                     | Client/Server (Domain)           |
+| --------------------------------- | ------------------------------------ | -------------------------------- |
+| Control                           | Distributed (each PC manages itself) | Centralized (DC)                 |
+| Where accounts live               | Locally on each PC                   | Centrally in the DC              |
+| Account on one PC seen on others? | No                                   | Yes                              |
+| Same username on another PC       | Different account                    | Same account                     |
+| Grant a permission                | On each PC separately                | Once, from the DC                |
+| Single point of failure           | No                                   | Yes (the DC)                     |
+| Security                          | Harder to enforce                    | Easier / centralized             |
+| Scalability                       | Limited                              | High                             |
+| Example                           | Workgroup sharing, torrent           | Company networks, Windows Domain |
 
 ---
 

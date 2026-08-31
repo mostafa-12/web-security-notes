@@ -137,6 +137,7 @@ The internet layer in other way, it's in where routers work, deals with IP proto
 - Logical addressing 
 	- Puting with data the source and destination IP address
 - Choosing the best path for data (based on speed, length of the path, quality of the path)
+- Data's name here is **Packet**
 
 
 --- 
@@ -149,7 +150,7 @@ The internet layer in other way, it's in where routers work, deals with IP proto
 		- Talk to the upper layer (network) and asking it some info like what's the protocol of sending request and make sure that the response protocol is the same or it will drop it
 	- MAC (Media access control)
 		- Where switch work 
-
+- Data's name here is **Frame**
 
 
 ---
@@ -157,5 +158,9 @@ The internet layer in other way, it's in where routers work, deals with IP proto
 ## Physical Layer 1
 
 - Converting data to a form can be transmitted by the media (like wires or wireless signals)
+- Data's name here is **Signal**
+![[Pasted image 20260829165354.png]]
+
+
 
 
