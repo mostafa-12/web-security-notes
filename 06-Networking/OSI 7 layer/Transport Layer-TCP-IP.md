@@ -1,6 +1,7 @@
 
+# Transport Layer — TCP & UDP
 
-> **Level: from TCP connection establishment → data transfer → flow control → error detection → connection termination.**
+> **Level: from TCP connection establishment → data transfer → flow control → congestion control → error detection → connection termination.**
 
 ---
 
@@ -28,6 +29,8 @@ It provides:
 - Retransmission
     
 - Flow control
+    
+- Congestion control
     
 - Error detection
     
@@ -279,7 +282,7 @@ Receiver Buffer
 
 ---
 
-# 10. Receive Window / Window Size
+# 10. Receive Window — `rwnd`
 
 The **Receive Window (`rwnd`)** tells the sender:
 
@@ -293,9 +296,9 @@ Window = 4000 bytes
 
 Meaning:
 
-> "You can currently send up to 4000 more bytes, subject to TCP's other limits."
+> "I currently have room for about 4000 more bytes."
 
-The Window field is inside the TCP Header.
+The Window field is inside the TCP Header:
 
 ```text
 ┌──────────────────────────┐
@@ -310,7 +313,7 @@ The Window field is inside the TCP Header.
 
 ---
 
-# 11. Buffer ↔ Window
+# 11. Buffer ↔ `rwnd`
 
 The relationship is:
 
@@ -319,7 +322,7 @@ Buffer
    ↓
 Available free space
    ↓
-Receive Window
+Receive Window (rwnd)
    ↓
 Window field advertised to sender
 ```
@@ -336,55 +339,179 @@ Free   = 4000 bytes
 So the receiver can advertise:
 
 ```text
-Window = 4000
+rwnd = 4000
 ```
 
-As the application consumes data, more buffer space becomes available and the window can increase.
+As the application consumes data, more buffer space becomes available and `rwnd` can increase.
 
 ---
 
-# 12. MSS vs Window
+# 12. `rwnd` vs `cwnd`
 
-These are different things:
+TCP has **two different limits** that affect how much data can be sent at the same time.
 
 ```text
-MSS
-↓
-Maximum data in ONE segment
+rwnd = Receive Window
+cwnd = Congestion Window
+```
 
-Window
-↓
-Total number of bytes the receiver currently allows to be in flight
+They work **together**, but they solve different problems.
+
+---
+
+## `rwnd` — Receiver Capacity
+
+`rwnd` answers:
+
+> **"How much can the receiver currently accept?"**
+
+It is related to the receiver's buffer.
+
+```text
+Buffer
+   ↓
+Available Space
+   ↓
+rwnd
 ```
 
 Example:
 
 ```text
-MSS    = 1460
-Window = 5840
+rwnd = 5000 bytes
+```
+
+The receiver is currently able to accept about 5000 more bytes.
+
+---
+
+## `cwnd` — Network Capacity
+
+`cwnd` answers roughly:
+
+> **"How much data can I currently put into the network without causing excessive congestion?"**
+
+It is controlled by the sender's **Congestion Control** algorithm.
+
+Initially, TCP starts cautiously and then increases `cwnd` as transmission succeeds.
+
+Simplified:
+
+```text
+Small amount
+     ↓ ACK ✅
+More
+     ↓ ACK ✅
+More
+     ↓ ACK ✅
+...
+```
+
+This is associated with **Slow Start** and later **Congestion Avoidance**.
+
+If TCP detects congestion, such as packet loss, it reduces its sending rate/window according to the congestion-control algorithm.
+
+---
+
+# 13. How `rwnd` and `cwnd` Work Together
+
+The sender must respect **both** limits.
+
+Simplified:
+
+```text
+Effective Send Window ≈ min(rwnd, cwnd)
+```
+
+Example:
+
+```text
+MSS  = 1000 bytes
+rwnd = 5000 bytes
+cwnd = 3000 bytes
 ```
 
 Therefore:
 
 ```text
-5840 / 1460 = 4
+min(5000, 3000) = 3000 bytes
 ```
 
-So this could represent roughly:
+So roughly:
 
 ```text
-[1460] [1460] [1460] [1460]
+[1000] [1000] [1000]
 ```
 
-But the Window itself is measured in **bytes**, not segments.
+can be in flight.
 
 ---
 
-# 13. Sliding Window
+### Another Example
 
-The receive window changes as data arrives and buffer space is consumed.
+```text
+MSS  = 1000 bytes
+rwnd = 2000 bytes
+cwnd = 5000 bytes
+```
 
-This is the idea behind the **Sliding Window**:
+The network can handle 5000 bytes, but the receiver only has room for 2000.
+
+Therefore:
+
+```text
+min(2000, 5000) = 2000 bytes
+```
+
+So roughly:
+
+```text
+[1000] [1000]
+```
+
+can be sent.
+
+---
+
+# 14. MSS vs `rwnd` vs `cwnd`
+
+These three are different:
+
+```text
+MSS
+↓
+Maximum data size of ONE segment
+
+rwnd
+↓
+How much the receiver can currently accept
+
+cwnd
+↓
+How much data the sender currently allows into the network
+```
+
+So:
+
+```text
+MSS
+   ↓
+Size of each piece
+
+rwnd + cwnd
+   ↓
+How many bytes can currently be in flight
+```
+
+The sender also has to obey the MSS when constructing each segment.
+
+---
+
+# 15. Sliding Window
+
+The **Sliding Window** is the idea that the range of data allowed to be sent/received moves forward as ACKs arrive and buffer space becomes available.
+
+Simplified:
 
 ```text
 Initial:
@@ -403,7 +530,7 @@ The window effectively moves forward through the byte stream.
 
 ---
 
-# 14. ACK + Window
+# 16. ACK + Window
 
 A TCP ACK can carry both:
 
@@ -436,14 +563,14 @@ How much more can I receive?
 
 ---
 
-# 15. Example: Downloading a 10 MB Image
+# 17. Example: Downloading a 10 MB Image
 
 Suppose:
 
 ```text
 File   = 10 MB
 MSS    = 1460 bytes
-Window = 5840 bytes
+rwnd   = 5840 bytes
 ```
 
 ### Step 1 — Establish TCP
@@ -457,8 +584,6 @@ ACK ------------------------->
 ```
 
 ### Step 2 — Application Request
-
-The client sends:
 
 ```text
 GET /image.jpg
@@ -487,19 +612,11 @@ Segment 3 → Seq = 7921
 Segment 4 → Seq = 9381
 ```
 
-Because:
-
-```text
-5001 + 1460 = 6461
-6461 + 1460 = 7921
-...
-```
-
-The client sends ACKs as it receives the data.
+The number increases because each previous segment carried 1460 bytes.
 
 ---
 
-# 16. What if a Segment Is Lost?
+# 18. What If a Segment Is Lost?
 
 Example:
 
@@ -511,8 +628,6 @@ Segment 4 ✅
 ```
 
 The Sequence Numbers reveal the gap.
-
-The receiver may continue acknowledging the last contiguous data it has.
 
 For example:
 
@@ -528,11 +643,9 @@ TCP has mechanisms to detect the loss and retransmit the missing data.
 
 ---
 
-# 17. The Six TCP Flags
+# 19. The Six TCP Flags
 
-The TCP header contains several control **flags**.
-
-At your current level, focus on these six:
+The six commonly discussed TCP flags are:
 
 ```text
 URG
@@ -543,21 +656,19 @@ SYN
 FIN
 ```
 
-## 1. SYN — Synchronize
+## SYN — Synchronize
 
-Used to **start a TCP connection** and synchronize sequence numbers.
+Used to start a TCP connection.
 
 ```text
 Client → SYN → Server
 ```
 
-Think:
-
 > **"Let's start a connection."**
 
 ---
 
-## 2. ACK — Acknowledgment
+## ACK — Acknowledgment
 
 Used to acknowledge received data or TCP control information.
 
@@ -565,17 +676,11 @@ Used to acknowledge received data or TCP control information.
 ACK = 1101
 ```
 
-Means:
-
 > **"The next byte I expect is 1101."**
-
-Think:
-
-> **"I received it."**
 
 ---
 
-## 3. FIN — Finish
+## FIN — Finish
 
 Used when a side has finished sending data.
 
@@ -583,70 +688,62 @@ Used when a side has finished sending data.
 FIN
 ```
 
-Means:
-
 > **"I am finished sending."**
 
-Used during TCP connection termination.
+Used during normal TCP termination.
 
 ---
 
-## 4. RST — Reset
+## RST — Reset
 
-Used to **immediately terminate/reset a TCP connection**.
-
-For example, if a connection is not valid or a service refuses the connection:
+Used to immediately reset/terminate a TCP connection.
 
 ```text
 RST
 ```
 
-Think:
+> **"Stop/reset this connection immediately."**
 
-> **"Stop this connection immediately."**
-
-It is different from `FIN`, which is used for a normal, graceful closing process.
+Unlike `FIN`, it is not a graceful close.
 
 ---
 
-## 5. PSH — Push
+## PSH — Push
 
-PSH tells the receiving TCP implementation, roughly:
+Roughly means:
 
 > **"Pass the available data to the application promptly."**
 
-It is **not**:
+It does **not** mean:
 
 ```text
 ❌ End of the window
 ❌ End of the connection
-❌ Missing segment indicator
+❌ Missing segment
 ❌ Segment number
 ```
 
-Sequence Numbers are what help identify gaps in the byte stream.
+Sequence Numbers are used to determine where data belongs and reveal gaps.
 
-Also, **there is no general TCP rule that every 4th segment must have PSH set.**
+There is also **no general TCP rule that every 4th segment must have PSH set**.
 
 ---
 
-## 6. URG — Urgent
+## URG — Urgent
 
-Indicates that urgent data is present, using the **Urgent Pointer**.
-
-At your current level, the important thing is simply:
+Indicates that urgent data is associated with the segment.
 
 ```text
 URG
 ↓
-There is urgent data associated with this segment.
+Urgent data indication
 ```
 
-You do not need to go deeply into the historical/implementation details yet.
+At this level, knowing the purpose is enough.
 
 ---
 
-# 18. The Flags in the Handshake and Closing
+# 20. Flags During Opening and Closing
 
 ### Opening
 
@@ -670,7 +767,7 @@ FIN
 ACK
 ```
 
-### Immediate reset
+### Immediate Reset
 
 ```text
 RST
@@ -678,7 +775,7 @@ RST
 
 ---
 
-# 19. Checksum
+# 21. Checksum
 
 The TCP/UDP Checksum is used for **Error Detection**.
 
@@ -687,14 +784,14 @@ Simplified idea:
 ```text
 Header + Data
       ↓
-Checksum calculation
+Checksum Calculation
       ↓
-Checksum value
+Checksum Value
 ```
 
 The sender places the checksum in the header.
 
-The receiver performs the calculation again.
+The receiver calculates it again.
 
 ```text
 Match ✅
@@ -718,13 +815,13 @@ UDP does not provide TCP-style retransmission.
 
 ---
 
-# 20. TCP vs UDP Checksum
+# 22. TCP vs UDP Checksum
 
 Both have a checksum mechanism:
 
 ```text
-TCP  → Checksum ✅
-UDP  → Checksum ✅
+TCP → Checksum ✅
+UDP → Checksum ✅
 ```
 
 But:
@@ -743,7 +840,7 @@ UDP
 
 ---
 
-# 21. Four-Way TCP Termination
+# 23. Four-Way TCP Termination
 
 When both sides are finished:
 
@@ -764,7 +861,7 @@ The client may stop sending while the server still has data to send.
 
 ---
 
-# 22. Final Relationship Map
+# 24. Final Relationship Map
 
 ```text
                          TRANSPORT LAYER
@@ -781,30 +878,38 @@ The client may stop sending while the server still has data to send.
                     │
                Data Transfer
                     │
-       ┌────────────┼─────────────┐
-       │            │             │
-      MSS         Window       Sequence / ACK
-       │            │             │
-Size of ONE     Receive         Position of
-TCP segment      capacity       bytes in stream
-                    │
-                  Buffer
-                    │
-            Available space
-                    │
-                    ↓
-              Sliding Window
-                    │
-                Checksum
-                    │
-             Error Detection
-                    │
-                   FIN
-                    │
-             4-Way Termination
+       ┌────────────┼────────────────────┐
+       │            │                    │
+      MSS          rwnd                 cwnd
+       │            │                    │
+Size of ONE    Receiver capacity    Network congestion
+TCP segment          │                    │
+                     │                    │
+                  Buffer             Congestion Control
+                                          │
+                               Slow Start / Congestion
+                                    Avoidance
+                     │                    │
+                     └─────────┬──────────┘
+                               ↓
+                         min(rwnd, cwnd)
+                               ↓
+                      Amount in flight
+                               │
+                         Sequence / ACK
+                               │
+                         Data ordering
+                               │
+                          Checksum
+                               │
+                       Error Detection
+                               │
+                              FIN
+                               │
+                       4-Way Termination
 ```
 
-# The Core Things to Remember
+# Core Things to Remember
 
 ```text
 SYN
@@ -822,8 +927,11 @@ MSS
 Buffer
 → Memory used to hold received data
 
-Window
-→ How many bytes the receiver can currently accept
+rwnd
+→ How much the receiver can currently accept
+
+cwnd
+→ How much data TCP currently allows into the network
 
 PSH
 → Push available data to the application promptly
@@ -844,17 +952,29 @@ Checksum
 ### One-line mental model
 
 ```text
-MSS   = size of one piece
-Buffer = storage for received pieces
-Window = available receiving space
-SEQ   = where this piece belongs
-ACK   = what byte comes next
-PSH   = deliver data to the application
-Checksum = is the data corrupted?
-SYN   = start
-FIN   = finish
-RST   = reset
-URG   = urgent
+MSS    = size of one piece
+Buffer = storage for received data
+rwnd   = receiver's available capacity
+cwnd   = network's current sending limit
+SEQ    = where this piece belongs
+ACK    = what byte comes next
+PSH    = deliver data to the application
+Checksum = detect corruption
+SYN    = start
+FIN    = finish
+RST    = reset
+URG    = urgent
 ```
 
-![[Screenshot 2026-08-31 010358.png]]
+**The most important relationship:**
+
+```text
+MSS → size of ONE segment
+
+rwnd → receiver limit
+
+cwnd → network limit
+
+Actual sending
+≈ min(rwnd, cwnd)
+```
