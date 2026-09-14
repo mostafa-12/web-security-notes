@@ -23,6 +23,7 @@ Reconnaissance — mapping the target application's attack surface. Every findin
 | `Discovering Hidden Content/Context-Aware WordList.md` | Wordlists based on app structure |
 | `Discovering Hidden Content/Other Resources to Site's content.md` | Search engines, Wayback, developer footprints |
 | `Wayback Machine (CDX API).md` | Historical recon deep-dive: snapshot versioning + CDX API for rotated secrets & URL discovery |
+| `Methodology.md` | 2-step workflow: Manual Browsing → Passive spider → Active spider |
 | `00-Recon Map.md` | Cross-folder navigation map |
 
 ---
@@ -41,7 +42,8 @@ Reconnaissance — mapping the target application's attack surface. Every findin
 ```
 1.  Manual Browsing.md
 2.  Robots file.md + Site Map.md
-3.  Web Spidering/Intro.md
+3.  Methodology.md
+4.  Web Spidering/Intro.md
 4.  Web Spidering/User Spidering Methodology (WAHH).md
 5.  Web Spidering/Site Map Discovery vs Crawling.md
 6.  Web Spidering/Per-Page CSRF Tokens Limitations.md

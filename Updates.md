@@ -3,6 +3,84 @@
 
 ---
 
+## 2026-09-14
+
+### Completed
+
+#### Networking — `06-Networking/`
+
+- ✅ Transport Layer deep-dive (`OSI 7 layer/Transport Layer-TCP-IP.md`) — TCP vs UDP, 3-way handshake (SYN → SYN-ACK → ACK), Seq/ACK math, MSS vs MTU (1500 − 20 − 20 = 1460), buffer → `rwnd`, `rwnd` vs `cwnd` (`min(rwnd, cwnd)`), sliding window, 6 flags, 4-way termination, checksum
+- ✅ Network (Internet) Layer new folder (`OSI 7 layer/Network(Internet) layer/`) — `IPv4.md` (classes A–E, Loopback `127/8`, Private vs Public + NAT/PAT), `IPv4 Header.md` (20–60 bytes, IHL, TTL, fragmentation/reassembly, overlapping-fragment IDS evasion), `Subnetting.md` (CIDR, Block Size `256 − mask`, `Usable = 2^h − 2`, VLSM largest-first + worked example), `IP vs MAC.md` (why two addresses, ARP bridge, IP conflict + ARP spoofing, MAC flooding → Port Security)
+- ✅ Layer foundations expanded — `OSI 7 layer/Basics Knowledge.md` (7 layers, adjacent vs same-layer, duplex mismatch 3 cases, CSMA/CD), `OSI 7 layer/Ports.md` (ranges, Socket = IP + Port), `Connection Models.md` (P2P local accounts vs Domain/DC central auth), `Basics.md` (topologies, cables CAT5/5e/6, CSMA/CD), `OSI 7 layer/Application Layer-TCP-IP.md` (DHCP 4 ways + DORA broadcast logic, DNS hierarchy + Recursive vs Iterative)
+- ✅ Expanded `07-CheatSheets/Ports-Services.md` — full port/service table (FTP/SSH/DNS/DHCP/DB/Remote/Mail/SMB/LDAP/Docker/Redis/Elastic/Mongo), web/dev ports, DB security notes, UDP coverage, CVE lookup checklist
+
+
+
+---
+
+### 💡 Key Concepts
+
+- **Effective send window = `min(rwnd, cwnd)`** — receiver capacity vs network capacity are independent limits; MSS is only the size of one piece
+- **IP decision inside sender (L3), Switch executes on MAC (L2)** — same-network → ARP direct; different-network → Gateway or drop
+- **MAC carries you before you have IP, IP takes you outside after you have it** — Day-Zero LAN works on factory MACs; L3 needs DHCP/planning on top
+- **No one does binary AND daily** — Block Size walk (`256 − mask`) + memorize `/25=126, /26=62, /27=30, /28=14, /30=2` + VLSM largest-first
+- **Every sensitive endpoint must authz on its own** — multi-step workflows are only as strong as the final request's check
+- **Recon completeness = finding completeness** — backup files, JS bundles, API docs, and historical sources are where missed bugs live
+
+---
+
+### Next Goal
+
+- Continue Network layer (ARP, ICMP, routing) → tie back to web security (SSRF, IP spoofing, TTL fingerprinting)
+- Apply recon methodology on Juice Shop / real target and record results
+- Start CORS mechanism + attack scenarios
+
+---
+
+## 2026-08-22
+
+### Completed
+
+#### Bug Bounty Writeups — `09-Writeups & Reports/`
+
+- ✅ Case study: **From Internal User to Admin** (`From Internal User to Admin - Broken Access Control in SaaS.md`) — UI hides role selector for Internal Users, backend accepts `companyUserRoles[]` on `POST /api/v1/contacts` without authz check → invite Manager/Administrator accounts. Closed as duplicate; added row + **Q&A (5 questions)** + techniques (29–33) to `Reports Summary Table.md`
+- ✅ Case study: **Authentication Bypass via .php Extension Removal** (`Authentication Bypass via .php Extension Removal.md`) — `/videos.php` requires auth, `/videos` serves same app unauthenticated (URL-normalization mismatch) + `/media/` directory listing → all user videos exposed. Zero creds, zero payloads
+- ✅ Scenario: **JWT Refresh Token Design Flaw** (`jwt-design-flaw-scenario.md`) — refresh JWT validated by signature only (`sub` trusted, no `jti`/session/rotation/device binding) → stolen token = zero-click takeover until expiry (6 days); includes vulnerable vs fixed (session store + rotation + reuse-detection) pseudo-code
+- ✅ Expanded `Reports Summary Table.md` — rows 18–20 (Internal→Admin, JWT flaw, .php bypass), full Q&A, new-techniques list up to 33
+
+#### Web Architecture — `02-Web Architecture/`
+
+- ✅ New note `Access & Refresh Tokens.md` — short-lived access vs long-lived refresh, refresh flow, rotation (`R1 → R2`, reuse detection), `HttpOnly ≠ unstealable`, cookie scope (`Path`, `__Host-` restrictions)
+
+#### Practice — `OWASP-Juice-Shop/` (new section)
+
+- ✅ `00-View Basket.md` — `GET /rest/basket/{id}` IDOR → swap ID / Intruder 0→N to read other users' baskets
+- ✅ `01-Access Admin Section.md` — captured JWT/session JSON (`role`, `deluxeToken`, `bid`) for admin-section access practice
+
+#### Recon — `04-Recon/`
+
+- ✅ New `Methodology.md` — Manual Browsing → Passive spider → Active spider workflow
+
+---
+
+### 💡 Key Concepts
+
+- **AuthN ≠ AuthZ at the parameter level** — valid token answers "who are you?", only a `can_assign_role()` check answers "can you grant `manager`?"
+- **Map all endpoints per feature** — same business function (invite) on two paths (`/companyjoinrequests` vs `/contacts`); the weakest authz wins
+- **Stateless ≠ secure** — a valid JWT signature ≠ a valid session; without server-side binding + `jti` + rotation there is no revocation
+- **Protected endpoint ≠ protected resource** — `/videos.php` vs `/videos` reach the same app; test extension, slash, case, encoding, matrix-param variants
+- **CSRF token is not an authz barrier** — same-session owner reads their own token; it stops cross-site forgery, not privilege abuse
+
+---
+
+### Next Goal
+
+- Keep mining writeups for new techniques and backfilling detailed notes
+- Expand Juice Shop notes from raw payloads into full stage-by-stage write-ups
+- Continue Linux + Networking roadmap topics
+
+---
+
 ## 2026-08-20
 
 ### Completed

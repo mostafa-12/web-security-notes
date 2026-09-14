@@ -21,6 +21,7 @@ The goal is not to copy reports — it's to see how the methodology in this repo
 | `IDOR + Public S3 Report Exposure.md` | Report generation = async background job: `postId` → `backgroundJobId` (ownership never checked) → PDF on a public S3 bucket, plain unauthenticated URL. Sequential post IDs + Intruder (0→9,999,999) → all users' private reports exposed. [Original write-up (Medium)](https://c0nqr0r.medium.com/idor-and-broken-access-control-risking-private-data-exposure-dd808412ed13) |
 | `From Internal User to Admin - Broken Access Control in SaaS.md` | UI hides role selector for Internal Users; backend accepts `companyUserRoles` on `/contacts` without authz check → Internal User invites Manager/Administrator accounts. Closed as duplicate. [Original write-up (Medium)](https://medium.com/@mobadawyx4/from-internal-user-to-admin-exploiting-broken-access-control-in-saas-platforms-c1a2e36489a4) |
 | `Authentication Bypass via .php Extension Removal.md` | Wildcard subdomain → SVG source path → custom 404 leaks app UI → `/videos.php` auth → `/videos` bypass → all user videos + `/media/` directory listing. Zero creds, zero payloads. |
+| `jwt-design-flaw-scenario.md` | Refresh JWT as sole source of truth (signature-only, no `jti`/session/rotation) → stolen token = zero-click takeover until expiry. Includes vulnerable vs fixed (session store + rotation + reuse detection) pseudo-code. Related: `02-Web Architecture/Access & Refresh Tokens.md`. |
 
 ---
 

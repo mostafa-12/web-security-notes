@@ -38,15 +38,18 @@ I want to share the knowledge I'm learning and help anyone who may find these no
 ## Topics
 
 - HTTP
-- Web Vulnerabilities
+- Web Architecture (Caching, Tokens, GraphQL, Algolia)
+- Web Vulnerabilities (Access Control, Multi-Step Processes, JWT flaws)
 - Burp Suite
 - PortSwigger Labs
 - Linux
-- Networking
+- Networking (OSI, TCP/UDP, IPv4, Subnetting, DHCP, DNS)
 - Recon
 - Python Automation
 - Bug Bounty Writeups & Reports
 - Bug Bounty Targets
+- Infrastructure (Splunk, Amazon S3)
+- OWASP Juice Shop practice
 - and more...
 
 ---
@@ -69,7 +72,8 @@ web-security-notes/
 ├── 08-Python Automating Project (ideas)/
 ├── 09-Writeups & Reports/
 ├── 10-Targets/
-└── 11-Infrastructure/
+├── 11-Infrastructure/
+└── OWASP-Juice-Shop/
 ```
 
 
