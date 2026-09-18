@@ -252,4 +252,24 @@ Therefore, modern browsers treat cookies as **Lax by default** if `SameSite` is 
     - Origin validation
     - Referer validation
 
+
+```
+Top-level navigation:
+
+Page A
+  ↓
+Page B
+
+Browser ينتقل فعليًا إلى Page B
+```
+
+```
+Subresource/background request:
+
+Page A
+  │
+  └────→ Request إلى Page B
+
+أنت لسه على Page A
+```
 > **Note:** `SameSite` is an additional browser-level defense, **not** a complete replacement for proper CSRF protection.g testing.**

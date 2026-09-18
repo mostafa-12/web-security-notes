@@ -1,0 +1,5 @@
+<html><head><link rel="stylesheet" href="/static/style.css"></head><body><h1>Shop Orders API (Lab)</h1>
+<p>You are the attacker: <code>Authorization: Bearer attacker-token</code> (owner of <code>shop-999</code> only).</p>
+<p>The victim (<code>shop-123</code>) leaves their dashboard open on auto-refresh. Their <code>GetOrders</code> responses are micro-cached for a few seconds.</p>
+<p>Endpoint: <code>POST /graphql</code> with <code>{"operationName":"GetOrders","variables":{"shop_id":"shop-123"}}</code></p>
+<p>Watch the <code>X-Cache</code> response header: <code>MISS</code> = you hit the real check, <code>HIT</code> = you got someone else's cached response.</p></body></html>

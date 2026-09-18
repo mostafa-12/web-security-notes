@@ -1,0 +1,8 @@
+<html><head><link rel="stylesheet" href="/static/style.css"></head><body><h1>Edit Profile {{ uid }}</h1>
+<script>var READ_ONLY = 1; // if 1, JS disables all fields (client-side only!)</script>
+<p>Name: {{ user.name }} | Email: {{ user.email }}</p>
+<pre id="data">{{ profile_json | safe }}</pre>
+<p>Intercept this response in Burp, change "readOnly":1 to "readOnly":0, forward it - then submit:</p>
+<form method="POST" action="/app/region/east/Users.aspx/manageUserProfile?userId={{ uid }}">
+<input name="name" value="{{ user.name }}"><button>Save</button></form>
+</body></html>

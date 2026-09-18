@@ -1,0 +1,5 @@
+<html><head><link rel="stylesheet" href="/static/style.css"></head><body><h1>Backoffice (Lab)</h1>
+<p>You are a <strong>Backoffice Editor</strong>. The sidebar shows:</p>
+<ul><li>Dashboard (allowed)</li><li>Reports (allowed)</li><li>Roles &amp; permissions - <strong>DISABLED for your role</strong></li></ul>
+<p>Login: <code>POST /login {"user":"editor"}</code> - you get a JWT. Decode it (jwt.io / Burp Decoder / <code>python -m json.tool</code> on the middle segment) and read what YOUR token claims you may do.</p>
+<p>Disabled in the UI? The endpoint is <code>POST /development/entitlements/roles</code> with <code>Authorization: Bearer &lt;jwt&gt;</code>.</p></body></html>

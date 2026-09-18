@@ -1,0 +1,1 @@
+{"sources": ["server/auth.ts", "server/algolia-admin.ts"], "secrets": {"devKey": "dev-second-key-XYZ"}, "antiBotBypass": ["/api/internal/health", "/1/indexes/*/query"]}

@@ -184,6 +184,17 @@ Resolver ────▶ Client: 93.184.216.34
     (and caches it for the TTL)
 ```
 
+
+
+| **وجه المقارنة**     | **Recursive Query**                                | **Iterative Query**                                        |
+| -------------------- | -------------------------------------------------- | ---------------------------------------------------------- |
+| **الشرط / الـ Flag** | `RD = 1` (طالب من السيرفر يلف بداله)               | `RD = 0` (طالب من السيرفر يجاوب من عنده فقط)               |
+| **التزام السيرفر**   | _"لو معنديش المعلومة هروح ألف أجيبها لك"_          | _"لو معنديش المعلومة هقولك اسأل مين غيري"_                 |
+| **أين تُستخدم؟**     | **فقط** بين العميل (Client/Browser) والـ Resolver. | **بين الـ Resolver** وكل سيرفرات الشجرة (Root, TLD, Auth). |
+> **ملاحظة أمنية وعملية:**
+> 
+> سيرفرات الـ Root والـ TLD والـ Authoritative بتعمل **Disable للـ Recursion** تماماً لأسباب أمنية ولتقليل الضغط. لو بعت لـ Authoritative server طلب فيه `RD = 1` (Recursive)، هيعدل الطلب أو سيرفضه وهيرد عليك بأسلوب الـ Iterative فقط!
+
 ---
 
 ## Recursive vs Iterative (Query types)
@@ -192,4 +203,5 @@ Resolver ────▶ Client: 93.184.216.34
 | ------------- | --------------------------------- | ----------------------------------------------------- |
 | **Recursive** | Client → Resolver                 | "Get me the answer, all of it, handle everything"     |
 | **Iterative** | Resolver → Root/TLD/Authoritative | "Just point me to the next server, I'll keep walking" |
+|               |                                   |                                                       |
 

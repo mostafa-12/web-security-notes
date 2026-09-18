@@ -1,0 +1,4 @@
+# Web Security Labs - shared dependencies
+# Install once from the labs/ folder:
+#   python -m pip install -r requirements.txt
+flask>=3.0

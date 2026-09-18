@@ -8,27 +8,27 @@ HTTP fundamentals — how the web works under the hood. Foundation for every vul
 
 ## Contents
 
-| File | Topic |
-|------|-------|
-| `HTTP Protocol intro.md` | Stateless, message-based model, TCP |
-| `Messages.md` | Request + Response structure, headers, body |
-| `Methods.md` | GET, POST, HEAD, TRACE, OPTIONS, PUT, PATCH |
-| `Headers.md` | General, request, response headers |
-| `URL's Types.md` | URL structure, relative URLs, REST |
-| `Encoding Schemes.md` | URL, Unicode, HTML, Base64, Hex |
-| `State & Sessions.md` | Session lifecycle, server-side vs client-side |
-| `Proxy.md` | HTTP/HTTPS proxy, Burp MITM, certificate pinning |
-| `Same-Origin Policy.md` | Cross-origin requests, cookies/DOM isolation |
-| `DOM.md` | Browser DOM, JavaScript interaction |
-| `Ajax.md` | XHR/Fetch, background requests, attack surface |
-| `Json.md` | JSON format, Ajax response parsing |
-| `Core Defense Mechanisms.md` | Auth, session management, access control, input validation |
-| `Cookies/00-Cookies Maping.md` | Cookie overview, attributes index |
-| `Cookies/Attributes.md` | Expires, Domain, Path, Secure, HttpOnly |
-| `Cookies/SameSite.md` | Strict, Lax, None, CSRF protection |
-| `Cookies/Cookie-Prefixes.md` | `__Secure-`, `__Host-`, `__Http-` prefixes |
-| `Cookies/HTTPS.md` | TLS, confidentiality, integrity |
-| `Cookies/Status-Codes.md` | All status codes organized by category |
+| File                           | Topic                                                      |
+| ------------------------------ | ---------------------------------------------------------- |
+| `HTTP Protocol intro.md`       | Stateless, message-based model, TCP                        |
+| `Messages.md`                  | Request + Response structure, headers, body                |
+| `Methods.md`                   | GET, POST, HEAD, TRACE, OPTIONS, PUT, PATCH                |
+| `Headers.md`                   | General, request, response headers                         |
+| `URL's Types.md`               | URL structure, relative URLs, REST                         |
+| `Encoding Schemes.md`          | URL, Unicode, HTML, Base64, Hex                            |
+| `State & Sessions.md`          | Session lifecycle, server-side vs client-side              |
+| `Proxy.md`                     | HTTP/HTTPS proxy, Burp MITM, certificate pinning           |
+| `Same-Origin Policy.md`        | Cross-origin requests, cookies/DOM isolation               |
+| `DOM.md`                       | Browser DOM, JavaScript interaction                        |
+| `Ajax.md`                      | XHR/Fetch, background requests, attack surface             |
+| `Json.md`                      | JSON format, Ajax response parsing                         |
+| `Core Defense Mechanisms.md`   | Auth, session management, access control, input validation |
+| `Cookies/00-Cookies Maping.md` | Cookie overview, attributes index                          |
+| `Cookies/Attributes.md`        | Expires, Domain, Path, Secure, HttpOnly                    |
+| `Cookies/SameSite.md`          | Strict, Lax, None, CSRF protection                         |
+| `Cookies/Cookie-Prefixes.md`   | `__Secure-`, `__Host-`, `__Http-` prefixes                 |
+| `Cookies/HTTPS.md`             | TLS, confidentiality, integrity                            |
+| `Cookies/Status-Codes.md`      | All status codes organized by category                     |
 
 ---
 

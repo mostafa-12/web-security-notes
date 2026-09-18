@@ -1,0 +1,7 @@
+# Obsidian editor config — personal, not part of the notes
+.obsidian/
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo

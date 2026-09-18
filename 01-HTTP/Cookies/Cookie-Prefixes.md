@@ -96,12 +96,12 @@ This is the strongest option for sensitive cookies.
 
 ### Summary
 
-| Prefix | Protection |
-|---------|------------|
-| `__Secure-` | HTTPS + Secure only |
-| `__Host-` | Bound to a single host (No Domain) |
-| `__Http-` | Must be HttpOnly (cannot be set by JavaScript) |
-| `__Host-Http-` | All previous protections combined |
+| Prefix         | Protection                                     |
+| -------------- | ---------------------------------------------- |
+| `__Secure-`    | HTTPS + Secure only                            |
+| `__Host-`      | Bound to a single host (No Domain)             |
+| `__Http-`      | Must be HttpOnly (cannot be set by JavaScript) |
+| `__Host-Http-` | All previous protections combined              |
 
 > **Pentester Note:** Cookie prefixes don't secure the server themselves. They tell the **browser** to reject cookies that don't satisfy specific security requirements, making attacks like **Session Fixation** more difficult.
  

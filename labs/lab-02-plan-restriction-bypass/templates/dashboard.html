@@ -1,0 +1,5 @@
+<html><head><link rel="stylesheet" href="/static/style.css"></head><body><h1>ExamenTry dashboard ({{ plan }} plan, user={{ user }})</h1>
+<p>Switch user: send header <code>X-User: free</code> or <code>X-User: paid</code></p>
+{% if plan == "free" %}<!-- Splunk forwarding hidden for free plan -->{% endif %}
+<ul><li><a href="/settings/projects/proj-123/plugins/splunk/">Data forwarding settings (deep link)</a></li>
+<li><a href="/static/app.js">/static/app.js (JS bundle)</a></li></ul></body></html>

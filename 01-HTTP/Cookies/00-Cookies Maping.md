@@ -16,6 +16,6 @@ Cookie: tracking=tI8rk7joMx44S2Uu85nSWc
 
 **[Attributes](/01-HTTP/Cookies/Attributes)**
 **[Cookie Prefixes](/01-HTTP/Cookies/Cookie-Prefixes)**
-**[Status Codes](/01-HTTP/Cookies/Status-Codes)**
+**[Status Codes](01-HTTP/Status-Codes.md)**
 **[HTTPS](/01-HTTP/Cookies/HTTPS)**
 

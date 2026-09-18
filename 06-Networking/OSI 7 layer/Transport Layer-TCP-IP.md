@@ -34,7 +34,7 @@ It provides:
     
 - Error detection
     
-- Connection establishment and termination
+- Connection establishment and termination (3&4 way handshake )
     
 
 ### UDP
@@ -121,7 +121,7 @@ It can carry:
 
 - Initial Sequence Number
     
-- MSS
+- MSS (Depend on MTU and first time send default value )
     
 - Window information
     
@@ -268,7 +268,7 @@ helps determine MSS
 
 # 9. Buffer
 
-The receiver has a **buffer** in memory where incoming TCP data can be stored before the application reads it.
+The receiver has a **buffer** in memory where incoming TCP data can be stored before the application reads it (ما قبل التطبيق ما يقرا الداتا - انتظار).
 
 Example:
 
@@ -692,6 +692,9 @@ FIN
 
 Used during normal TCP termination.
 
+- **Graceful Close:** Politely waits for all remaining data in the buffer to be sent.
+- **Completes the 4-way handshake** properly.
+
 ---
 
 ## RST — Reset
@@ -705,6 +708,8 @@ RST
 > **"Stop/reset this connection immediately."**
 
 Unlike `FIN`, it is not a graceful close.
+- **Abrupt Close:** Forces the connection to stop immediately from both sides.
+- **Drops all data in buffer** without completing the 4-way handshake.
 
 ---
 
@@ -727,6 +732,9 @@ Sequence Numbers are used to determine where data belongs and reveal gaps.
 
 There is also **no general TCP rule that every 4th segment must have PSH set**.
 
+- **Flushes the buffer:** Forces the sender to transmit immediately and forces the receiver to push the data and everything before it up to the application.
+- **Stays in-sequence** inside the queue.
+
 ---
 
 ## URG — Urgent
@@ -740,6 +748,9 @@ Urgent data indication
 ```
 
 At this level, knowing the purpose is enough.
+
+- **Transmitted before any other segments** in the network.
+- **Jumps over the buffer queue** to be processed immediately out-of-order.
 
 ---
 

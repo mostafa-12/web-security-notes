@@ -1,0 +1,8 @@
+<html><head><link rel="stylesheet" href="/static/style.css"></head><body><h1>Message Boards (Lab)</h1>
+<p>You are <code>u-bob</code>: <code>Authorization: Bearer bob-token</code> (admin of <code>board-1001</code> only).</p>
+<ul>
+<li>Your board simulator: <a href="/simulator/board-1001">/simulator/board-1001</a> (no login needed at all...)</li>
+<li>Your membership: <code>GET /board/board-1001/members</code> (as bob - see your role)</li>
+<li>GraphQL: <code>POST /graphql</code> with <code>{"query":"..."}</code></li>
+</ul>
+<p>Board IDs are sequential. The app hands them out freely - and never checks them against your JWT.</p></body></html>

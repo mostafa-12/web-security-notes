@@ -3,6 +3,61 @@
 
 ---
 
+## 2026-09-18
+
+### Completed
+
+#### Bug Bounty Writeups — `09-Writeups & Reports/`
+
+- ✅ Case study: **Easy P3 Broken Access Control — Employee Profile Update** (`Easy P3 Broken Access Control - Employee Profile Update.md`) — profile shown read-only in UI, backend update endpoint accepts the replayed request from a low-priv session (`200 OK`, name changed to HACKED). Triaged then duplicate
+- ✅ Case study: **Gmail API Attachment IDOR** (`Gmail API Attachment IDOR - Missing Object-Level Authorization.md`) — `users.messages.attachments.get` returns any attachment for any valid `attachmentId`, `messageId` ignored (even `"foo"` works) → any authenticated Google user reads anyone's attachments. Reported Jan 2023, fixed by Google; blast radius capped by ID entropy, not authz
+- ✅ Case study: **Django Debug Mode → PII Leak (500+ Employees)** (`Django Debug Mode to PII Leak (500+ Employees).md`) — internal subdomain on 443 (open Sign-Up) + 8443 (Django DEBUG + Swagger/Redoc) sharing one backend → own low-priv JWT in Swagger Authorize → bare-`id` IDOR → names, work emails, phones of 500+ employees. Includes deep-dives: Django DEBUG dangers, Swagger as attack map, cross-port token reuse
+- ✅ Expanded `Reports Summary Table.md` — 3 new rows, Q&A (Easy P3 ×2, Gmail ×2, Django ×3), new-techniques list 34–45, Related links
+- ✅ Updated `09-Writeups & Reports/README.md` contents table with the 3 new case studies
+
+#### Practice — `labs/` (new section)
+
+- ✅ Created `labs/` — Flask practice labs recreating the writeups (`requirements.txt` shared: `flask>=3.0`, uniform structure `app.py` / `config.py` / `store.py` / `static/` / `templates/` / `README.md` / `SOLUTION.md`)
+- ✅ 11 complete labs (01–11): training-platform bypass, plan-restriction bypass, API PII leak, Algolia exposure, IDOR+S3 reports, internal-to-admin, .php extension bypass, JWT refresh flaw, cache-auth bypass, Vestaboard IDOR ×3, JWT scope escalation
+- 🚧 3 skeletons in progress (12–14, `static/` + `templates/` only): GraphQL export IDOR, deleted-restore IDOR, presence-based BAC privesc
+- ✅ `labs/README.md` — setup, rules (solve before opening `SOLUTION.md`), suggested order
+
+#### Networking — `06-Networking/`
+
+- ✅ `Application Layer-TCP-IP.md` — Recursive vs Iterative comparison table (`RD=1` client→Resolver only, `RD=0` Resolver→Root/TLD/Auth) + note: Root/TLD/Authoritative disable recursion
+- ✅ `Transport Layer-TCP-IP.md` — handshake clarifications, MSS/buffer notes, FIN (graceful, completes 4-way) vs RST (abrupt, drops buffer) vs PSH (flush/push in-sequence) vs URG (out-of-order jump) close semantics
+
+#### HTTP — `01-HTTP/`
+
+- ✅ New `Status-Codes.md` — 1xx–5xx categories + common codes with testing relevance
+- ✅ Small fixes: Status-Codes link in `Cookies/00-Cookies Maping.md`, `Cookie-Prefixes.md` table reformat, top-level vs subresource diagrams in `SameSite.md`, POST creates-resource line in `Methods.md`, `README.md` table reformat
+
+#### Repository Improvements
+
+- ✅ Removed apostrophe filenames causing tooling friction: `01-HTTP/URL's Types.md` → `URL_s Types.md`, `Other Resources to Site's content.md` → `Site_s content.md`
+- ✅ Added `.gitignore` (`.obsidian/`, `__pycache__/`, `*.pyc`) so editor cache and bytecode never get committed
+
+---
+
+### 💡 Key Concepts
+
+- **Read-only UI is a bypass signal** — a displayed-but-not-editable profile proves the `GET` path exists; hunt the `PUT/PATCH` in Burp history/JS and replay with the low-priv token, proving with a harmless field first
+- **Unguessable ≠ authorized** — long random IDs (`attachmentId`, `backgroundJobId`) stop enumeration, never authorization; every ID-keyed read still needs `owner == requester`
+- **Validate all parameters, garbage-value test is decisive** — `messageId="foo"` returning `200 OK` proves non-validation in one request; an ignored parameter is itself the finding
+- **DEBUG pages and API docs travel together** — frameworks auto-mount docs under debug settings; finding one means hunting `/swagger`, `/redoc`, `/api/docs`, `/openapi.json`
+- **Ports are not security boundaries** — same subdomain on a new port inherits the same DB and signing key; replay tokens across surfaces sharing a brand
+- **FIN vs RST vs PSH vs URG** — graceful close completes the handshake and drains the buffer; reset drops everything; push flushes in-sequence; urgent jumps the queue
+
+---
+
+### Next Goal
+
+- Finish labs 12–14 (GraphQL export IDOR, deleted-restore IDOR, presence-based BAC) + update `labs/README.md` table (currently lists 8, 11 complete)
+- Continue Network layer (ARP, ICMP, routing) → tie back to web security (SSRF, IP spoofing, TTL fingerprinting)
+- Keep mining writeups for new techniques and backfilling detailed notes
+
+---
+
 ## 2026-09-14
 
 ### Completed

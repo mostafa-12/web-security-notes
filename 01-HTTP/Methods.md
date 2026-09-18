@@ -6,6 +6,7 @@
 	- Safe to bookmark and share.
 	- Never send sensitive data in the URL.
 - POST : 
+	- Creates New resource in server
 	- Perform an action on the server.
 	- Data is sent in the request body (can also use query parameters).
 	- Used for actions like login, registration, updating data.
