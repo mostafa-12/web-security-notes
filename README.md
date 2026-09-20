@@ -73,7 +73,8 @@ web-security-notes/
 ├── 09-Writeups & Reports/
 ├── 10-Targets/
 ├── 11-Infrastructure/
-└── OWASP-Juice-Shop/
+├── OWASP-Juice-Shop/
+└── labs/
 ```
 
 

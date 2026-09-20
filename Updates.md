@@ -3,6 +3,57 @@
 
 ---
 
+## 2026-09-20
+
+### Completed
+
+#### Bug Bounty Writeups — `09-Writeups & Reports/` (8 new, Total: 25)
+
+- ✅ Case study: **Facebook Analytics Private Chart Disclosure via IDOR** (`Facebook Analytics Private Chart Disclosure via IDOR.md`) — parent Dashboard enforces Owner-only, child chart resolver trusts `chartID` alone on `AnalyticsChartDeleteMutation` (`doc_id=1297068037067230`) → private chart title + query spec leaked. LOW VALID, bounty Apr 2020
+- ✅ Case study: **Facebook Event Co-Host IDOR** (`Facebook Event Co-Host IDOR - Adding Anyone Including Blocked Users.md`) — Friends-only picker bypassed by swapping `co_hosts[0]` to any ID (non-friend / blocked either direction) → forced pending co-host, no reject, auto-public. $750 MEDIUM VALID
+- ✅ Case study: **Facebook Video Poll Deletion via IDOR** (`Facebook Video Poll Deletion via IDOR.md`) — edit-save checks `v` + `av` but trusts `deleted_poll_ids[0]` alone → anyone's video poll deleted. MEDIUM VALID (Nov 2018)
+- ✅ Case study: **From IDOR to Fraud — Travel Booking** (`From IDOR to Fraud - Travel Booking Platform bookingId.md`) — `GET /fr/account/getbooking` + `getbookingFlight` trust sequential `bookingId` with no ownership check (`180845→180844` leaks PII + itinerary)
+- ✅ Case study: **Frontend Security Is Not Enough** (`Frontend Security Is Not Enough - Broken Access Control in REST APIs.md`) — admin page flashes <2s then JS-crashes on `unauthorized`, backend `/api/admin/*` returns `200 + admin JSON` to low-priv user (frontend-only guard, vertical BAC)
+- ✅ Case study: **Live Share Accept Bypass** (`Live Share Accept Bypass - Regular User Bypasses Admin Approval.md`) — inbound live-share accept meant for Org/Account Admin only, regular user accepts via email link → share goes org-wide, zero admin approval. P4 $250
+- ✅ Case study: **The Missing Link — BAC to Full ATO** (`The Missing Link - Broken Access Control to Full ATO.md`) — password change split into `Authenticate → Set` on `POST /apiv1` with no linking token/flag → `Set` alone + `"password"` injection = session-only to permanent ATO
+- ✅ Case study: **Unauthenticated Payment Processing (CWE-306, CVSS 8.5)** (`Unauthenticated Payment Processing Endpoint - CWE-306 (CVSS 8.5).md`) — public `/v3/api-docs` → unauthenticated `/microforms/session` mints live Cybersource `captureContext` JWT → unauthenticated `/microforms/process-payment` reaches live processor (real transaction IDs)
+- ✅ Expanded `Reports Summary Table.md` — numbered rows 1–25, 8 new rows + Q&A + new techniques
+- ✅ Updated `09-Writeups & Reports/README.md` contents table with the 8 new case studies
+
+#### Methodology — `03-Web-Vulnerabilities/Methodology/`
+
+- ✅ New `BAC-Password-Change-and-Mass-Assignment.md` — hunting split Validate→Execute flows (isolate step 2, link-token/session-flag check), mass-assignment fuzz list (`password`/`email`/`role`/`id` swap), Burp checklist + fix reference
+
+#### Practice — `OWASP-Juice-Shop/`
+
+- ✅ New `03-BAC-Roadmap.md` — BAC-only track easiest→hardest (View Basket → Admin Section → Five-Star → Web3 Sandbox → Forged Feedback/Review → Manipulate Basket → Product Tampering → CSRF → Easter Egg) with per-challenge goal + classification rule
+
+#### Repository Improvements
+
+- ✅ `labs/README.md` — added lab-09/10/11 rows, fixed lab count (8 → 11)
+- ✅ `OWASP-Juice-Shop/README.md` — added `03-BAC-Roadmap.md` to contents + study order
+- ✅ Root `README.md` — added `labs/` to repository structure tree
+
+---
+
+### 💡 Key Concepts
+
+- **Parent guard ≠ child guard** — dashboard ownership check means nothing if the nested object resolver (chart, poll, co-host) trusts its own ID alone
+- **Step 2 must prove step 1 happened** — split flows (`Authenticate → Set`) need a link (same-request proof, single-use token, or server session flag); no link = ATO candidate
+- **Frontend crash is a signal, not a stop** — admin page flashing then JS-crashing on `unauthorized` means replay the API directly with the low-priv token
+- **Docs are unauthenticated attack maps** — public `/v3/api-docs` + `Origin`/CORS trusted as auth turns a payment processor into an open endpoint (CWE-306)
+- **Sequential IDs turn one IDOR into mass exposure** — `bookingId 180845→180844` proves the missing `owner == requester` check in one request
+
+---
+
+### Next Goal
+
+- Finish labs 12–14 (GraphQL export IDOR, deleted-restore IDOR, presence-based BAC) + update `labs/README.md` table
+- Continue Network layer (ARP, ICMP, routing) → tie back to web security (SSRF, IP spoofing, TTL fingerprinting)
+- Keep mining writeups for new techniques and backfilling detailed notes
+
+---
+
 ## 2026-09-18
 
 ### Completed

@@ -32,10 +32,13 @@ python labs/lab-01-training-platform-bypass/app.py
 | [lab-06-internal-to-admin](lab-06-internal-to-admin/) | Internal User to Admin | 8006 | dual endpoints + unchecked `companyUserRoles` |
 | [lab-07-php-extension-bypass](lab-07-php-extension-bypass/) | Auth Bypass via .php Removal | 8007 | `/videos.php` protected, `/videos` open + directory listing |
 | [lab-08-jwt-refresh-flaw](lab-08-jwt-refresh-flaw/) | JWT design flaw ($1450) | 8008 | refresh JWT as the session (signature-only, no jti/rotation) |
+| [lab-09-cache-auth-bypass](lab-09-cache-auth-bypass/) | Cache misconfig (authorized response under public key) | 8009 | micro-cache key without auth context + 4s race window |
+| [lab-10-vestaboard-idor](lab-10-vestaboard-idor/) | Vestaboard IDOR ×3 | 8010 | identifiers ≠ authorization (board read, GraphQL rename, role tamper) |
+| [lab-11-jwt-scope-escalation](lab-11-jwt-scope-escalation/) | Unauthorized Role Management (over-privileged JWT) | 8011 | disabled UI vs over-granted JWT scopes on roles endpoint |
 
 ## Suggested order
 ```
-07 -> 01 -> 02 -> 06 -> 03 -> 05 -> 04 -> 08
+07 -> 01 -> 02 -> 06 -> 03 -> 05 -> 09 -> 04 -> 10 -> 08 -> 11
 (easy URL tricks first, crypto/design hardest last)
 ```
 
@@ -58,5 +61,5 @@ Shared dependency for all labs: `requirements.txt` (`flask>=3.0`).
 
 ## Why Flask?
 - Closer to real apps than raw `http.server`: routing, JSON handling, and cookies work the way production code does.
-- One shared `requirements.txt` (`flask>=3.0`) for all 8 labs — install once.
+- One shared `requirements.txt` (`flask>=3.0`) for all 11 labs — install once.
 - Each `app.py` stays short and readable so you can review the root cause and the fix after solving.
